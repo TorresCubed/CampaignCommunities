@@ -1,71 +1,39 @@
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
-import { useCallback, useState } from "react";
 import Editor from "./Editor";
+import TextDisplay from "./TextDisplay";
+import { updatePageData } from "../store";
+import "./content.css"
 
 const styles = makeStyles(() => ({
   container:{
-    padding: 10
+    padding: 5,
+    position: "sticky"
   },
-  content: {
-    color: "white",
-  },
-  break: {
-    border: "1px solid maroon"
-  },
-  editor: {
-    backgroundColor: "white",
-  }
 }));
 
 
-const defaultData = () => {
-  return {
-    "time": new Date().getTime,
-    "blocks": [
-      {
-        "type": "paragraph",
-        "data": {
-          "text": "This is the start of my Editor",
-          "level":1
-        }
-      },
-    ]
-  }
-}
-
 const Content = (props) => {
   const classes = styles();
-  const title = props.currentPage.title;
-  const [editing, toggleEditing] = useState(false);
-  const [editorData, setEditorData] = useState(defaultData);
-
-  const handleChange = useCallback((newData) => {
-    setEditorData(newData);
-    console.log("changed data")
-  }, []);
-
-  const toggleEdit = (event) => {
-    event.preventDefault();
-    toggleEditing(!editing);
+  const { currentPage, editing, updatePageData } = props;
+  const { textContent } = currentPage;
+  const editorPackage  = {
+    data: textContent,
+    editorName: "mainContent",
+    update: updatePageData
   }
 
 
   return (
     <div className={classes.container}>
-      <button onClick={toggleEdit}>Edit Page</button>
-      {editing && 
-      <div>
-          <Editor data={editorData} saveData={handleChange}/>
-      </div>
-      }
-      {!editing &&
-        <div>
-            <h1> {title} </h1>
-            <hr className={classes.break}/>
-            <p className={classes.content}>
-              What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. WhThe standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.
-            </p>
+      <h1>{currentPage.page}</h1>
+      {editing ? 
+        <div className="container">
+            <Editor editorPackage={editorPackage}/>
+        </div>
+      :
+        <div className="container">
+          <TextDisplay data={textContent}/>
         </div>
       }
     </div>
@@ -78,4 +46,75 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(Content);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updatePageData: (pageData) => {
+      dispatch(updatePageData(pageData));
+    } 
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Content);
+
+
+
+// st transforms: transforms = {
+//   delimiter: () => {
+//     return `<br/>`;
+//   },
+
+//   header: ({ data }) => {
+//     return `<h${data.level}>${data.text}</h${data.level}>`;
+//   },
+
+//   paragraph: ({ data }) => {
+//     return `<p>${data.text}</p>`;
+//   },
+
+//   list: ({ data }) => {
+//     const listStyle = data.style === "unordered" ? "ul" : "ol";
+
+//     const recursor = (items: any, listStyle: string) => {
+//       const list = items.map((item: any) => {
+//         if (!item.content && !item.items) return `<li>${item}</li>`;
+
+//         let list = "";
+//         if (item.items) list = recursor(item.items, listStyle);
+//         if (item.content) return `<li> ${item.content} </li>` + list;
+//       });
+
+//       return `<${listStyle}>${list.join("")}</${listStyle}>`;
+//     };
+
+//     return recursor(data.items, listStyle);
+//   },
+
+//   image: ({ data }) => {
+//     let caption = data.caption ? data.caption : "Image";
+//     return `<img src="${
+//       data.file && data.file.url ? data.file.url : data.url
+//     }" alt="${caption}" />`;
+//   },
+
+//   quote: ({ data }) => {
+//     return `<blockquote>${data.text}</blockquote> - ${data.caption}`;
+//   },
+
+//   code: ({ data }) => {
+//     return `<pre><code>${data.code}</code></pre>`;
+//   },
+
+//   embed: ({ data }) => {
+//     switch (data.service) {
+//       case "vimeo":
+//         return `<iframe src="${data.embed}" height="${data.height}" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
+//       case "youtube":
+//         return `<iframe width="${data.width}" height="${data.height}" src="${data.embed}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+//       default:
+//         throw new Error(
+//           "Only Youtube and Vime Embeds are supported right now."
+//         );
+//     }
+//   },
+// };
+

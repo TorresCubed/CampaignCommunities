@@ -1,36 +1,41 @@
 import { makeStyles } from "@material-ui/core/styles"
 import { connect } from "react-redux";
+import { updateInfoData } from "../store";
+import Editor from "./Editor";
+import TextDisplay from "./TextDisplay";
 
 const styles = makeStyles(() => ({
   background: {
-  height: "fitContent",
   width: "200px",
   margin: "30px",
   padding: "10px",
   backgroundColor: "darkgray",
-  float: "right",
+  right: "20px",
+  top: "60px",
+  float: "right"
   },
-  pageInfo: {
-    marginLeft: "25px",
-    margin: "10px"
-  }
 }));
 
 const PertInfo = (props) => {
   const classes = styles();
-  const info = props.currentPage.info;
-  const imgExists = props?.currentPage.image;
-
-
+  const { editing, currentPage, updateInfoData } = props;
+  const { pertInfo } = currentPage;
+  const editorPackage = {
+    data: pertInfo,
+    editorName: "pertInfoContent",
+    update: updateInfoData
+  }
+  
   return (
     <div className={classes.background}>
-      <div>
-        {imgExists && <div/>}
-      </div>
-      {
-        Object.entries(info).map(([key, val]) => 
-          <div className={classes.pageInfo} key={key}>{key + ": " + val} </div>
-        )
+      {editing ? 
+        <div >
+            <Editor editorPackage={editorPackage}/>
+        </div>
+      :
+        <div >
+          <TextDisplay data={pertInfo}/>
+        </div>
       }
     </div>
   );
@@ -42,4 +47,13 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(PertInfo);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateInfoData: (infoData) => {
+      dispatch(updateInfoData(infoData));
+    } 
+  };
+};
+
+
+export default connect(mapStateToProps,mapDispatchToProps)(PertInfo);
