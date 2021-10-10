@@ -24,12 +24,12 @@ const styles = makeStyles(() => ({
 
 const NavBar = (props) => {
   const classes = styles();
-  const campaign = props.currentPage.campaign;
+  const campaignName = props.currentPage.campaignName;
 
   return (
     <div className={classes.background}>
       <div className={classes.navTitle}>
-        {campaign}
+        {campaignName}
       </div>
       <input className={classes.searchBar} type="text"/>
     </div>

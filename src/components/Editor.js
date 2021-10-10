@@ -1,57 +1,54 @@
 import EditorJS from "@editorjs/editorjs";
-import Header from "@editorjs/header";
+import Undo from "editorjs-undo";
+import DragDrop from "editorjs-drag-drop";
 import React, { useEffect, useRef } from "react";
+import { EDITOR_JS_TOOLS } from "./Tools";
 
 
-
-const EDITOR_HOLDER_ID = "editorjs";
 
 const Editor = (props) => {
   const editorInstance = useRef();
-  const {data, saveData} = props;
+  const {editorPackage} = props;
+
   
-  useEffect(() => {
+  useEffect(() => { 
     if(!editorInstance.current) {
-      initateEditor();
+      const editor = new EditorJS({
+          holder: editorPackage.editorName,
+          autofocus: true,
+          data: editorPackage.data,
+          onReady: () => {
+            editorInstance.current = editor;
+            const undo = new Undo({ editor });
+            new DragDrop(editor)
+            undo.initialize(editorPackage.data);
+          },
+          placeholder: "Design your tale!",
+          tools: EDITOR_JS_TOOLS,
+          onChange: () => {
+            handleChange(editor)
+          }
+      });
     }
+    
+    const handleChange = async (editor) => {
+      const content = await editor.save();
+      editorPackage.update(content);
+    }
+
     return () => {
       editorInstance.current.destroy();
       editorInstance.current=null;
     }
-  }, []);
-
-
-  const handleChange = async (editor) => {
-    console.log("changing")
-    let content = await editor.save();
-    saveData(content)
-  }
-
-  const initateEditor = () => {
-    const editor = new EditorJS({
-        holder: "editorjs",
-        autofocus: true,
-        data: data,
-        onReady: () => {
-          editorInstance.current = editor;
-        },
-        placeholder: "Design your tale!",
-        tools: {
-          header: Header,
-        },
-        onChange: () => {
-          handleChange(editor);
-        }
-    });
-  };
-  
+  }, [editorPackage]);  
   
   return (
     <React.Fragment>
-      <div className="editor" id={EDITOR_HOLDER_ID}/>
+      <div id={editorPackage.editorName}/>
     </React.Fragment>
   );
 };
+
 
 
 export default Editor;
