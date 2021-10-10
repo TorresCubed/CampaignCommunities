@@ -1,32 +1,30 @@
 import EditorJS from "@editorjs/editorjs";
-import Header from "@editorjs/header";
+import Undo from "editorjs-undo";
+import DragDrop from "editorjs-drag-drop";
 import React, { useEffect, useRef } from "react";
-import { connect } from "react-redux";
-import { updatePageData } from "../store";
+import { EDITOR_JS_TOOLS } from "./Tools";
 
 
-
-const EDITOR_HOLDER_ID = "editorjs";
 
 const Editor = (props) => {
   const editorInstance = useRef();
-  const {currentPage, updatePageData} = props;
+  const {editorPackage} = props;
 
   
   useEffect(() => { 
     if(!editorInstance.current) {
-      console.log(currentPage.content)
       const editor = new EditorJS({
-          holder: "editorjs",
+          holder: editorPackage.editorName,
           autofocus: true,
-          data: currentPage.content,
+          data: editorPackage.data,
           onReady: () => {
             editorInstance.current = editor;
+            const undo = new Undo({ editor });
+            new DragDrop(editor)
+            undo.initialize(editorPackage.data);
           },
           placeholder: "Design your tale!",
-          tools: {
-            header: Header,
-          },
+          tools: EDITOR_JS_TOOLS,
           onChange: () => {
             handleChange(editor)
           }
@@ -35,39 +33,22 @@ const Editor = (props) => {
     
     const handleChange = async (editor) => {
       const content = await editor.save();
-      updatePageData(content);
+      editorPackage.update(content);
     }
 
     return () => {
       editorInstance.current.destroy();
       editorInstance.current=null;
     }
-  }, [currentPage.content, updatePageData]);
-
-
-
-  
+  }, [editorPackage]);  
   
   return (
     <React.Fragment>
-      <div className="editor" id={EDITOR_HOLDER_ID}/>
+      <div id={editorPackage.editorName}/>
     </React.Fragment>
   );
 };
 
 
-const mapStateToProps = (state) => {
-  return {
-    currentPage: state.currentPage
-  };
-};
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    updatePageData: (pageData) => {
-      dispatch(updatePageData(pageData));
-    } 
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Editor);
+export default Editor;

@@ -19,7 +19,7 @@ const styles = makeStyles(() => ({
 
 const QuickNav = (props) => {
   const classes = styles();
-  const jumps = props.currentPage.jumps || [];
+  const { jumps } = props;
 
   return (
     <div className={classes.background}>
@@ -34,7 +34,7 @@ const QuickNav = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    currentPage: state.currentPage
+    jumps: state.currentPage.jumps
   }
 }
 
