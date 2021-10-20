@@ -3,7 +3,7 @@ import React from "react";
 
 
 const TextDisplay = (props) => {
-  const { data } = props;
+  const { data, headerJumps } = props;
 
   
   return (
@@ -13,19 +13,27 @@ const TextDisplay = (props) => {
         let Tag = "";
         switch (block.type) {
           case "paragraph":
-            Tag = "p";
-            break;
+            return(<p key={`${key}`}>{block.data.text}</p>)
           case "header":
             Tag = "h"+block.data.level;
-            break;
-          case "delimiter":
-            Tag = "br";
-            break;
+            const jumpRef = (element) => (headerJumps.current[key] = element)
+            return(<Tag ref={jumpRef} key={`${key}`}>{block.data.text}</Tag>)
+          case "lineBreak":
+            return (<hr key={`${key}`}></hr>)
+          // case "list":
+          //   if(data.items.style === "ordered"){
+
+          //   }
+          //   return (<div></div>)
+          // case "checklist":
+          //   return (<div></div>)
+          // case "table":
+          //   return (<div></div>)
+          // case "quote":
+          //   return (<div></div>)
           default:
-            Tag = "div";
-            break;
+            return(<div key={`${key}`}>{block.data.text}</div>)
         }
-        return(<Tag key={`${key}`}>{block.data.text}</Tag>)
       })}
 
     </div>

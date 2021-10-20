@@ -3,14 +3,18 @@ import { connect } from "react-redux";
 
 const styles = makeStyles(() => ({
   background: {
-  margin: "30px",
-  float: "left",
-  left: 30,
-  backgroundColor: "brown",
-  height: "fitContent",
-  width: "200px",
+    margin: "30px",
+    float: "left",
+    left: 30,
+    backgroundColor: "brown",
+    height: "fitContent",
+    width: "200px",
   },
   navLinks: {
+    position: "relative",
+    display: "block",
+    zIndex: 9,
+    cursor: "pointer",
     marginLeft: "25px",
     color: "white",
     margin: "10px"
@@ -19,13 +23,28 @@ const styles = makeStyles(() => ({
 
 const QuickNav = (props) => {
   const classes = styles();
-  const { jumps } = props;
+  const { jumps, headerJumps, editing } = props;
+
+  const handleClick = (event) => {
+    if(editing){
+      alert("Jumps are disabled during 'Editing Mode'")
+      return;
+    }
+    const jumper = event.target.id;
+    headerJumps.current[jumper].scrollIntoView({behavior: "smooth"});
+  }
 
   return (
     <div className={classes.background}>
       {
         jumps.map((jump) => {
-          return <div key={jump} className={classes.navLinks}>{jump} </div>
+          return <li 
+            onClick={handleClick}
+            key={`${jump.id}`}
+            id={jump.id}
+            className={classes.navLinks}>
+              {jump.text} 
+          </li>
         })
       }
     </div>

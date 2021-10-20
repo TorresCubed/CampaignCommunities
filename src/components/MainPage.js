@@ -5,7 +5,8 @@ import { makeStyles } from "@material-ui/core/styles"
 const styles = makeStyles(() => ({
   root: {
     width: "100%",
-    height: "95vh",
+    height: "100%",
+    flex: "1 1 auto",
     color: "white",
     backgroundColor: "#282c40"
   }

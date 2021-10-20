@@ -1,5 +1,5 @@
 import { makeStyles } from "@material-ui/core/styles"
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import QuickNav from "./QuickNav";
 import PertInfo from "./PertInfo";
 import Content from "./Content";
@@ -20,6 +20,7 @@ const Page = (props) => {
   const { fetchPageContent } = props;
   const { currentPage } = props;
   const [editing, toggleEditing] = useState(false);
+  const headerJumps = useRef({});
 
   const handleClick = useCallback((event) => {
     event.preventDefault();
@@ -46,8 +47,10 @@ const Page = (props) => {
     <div className={classes.container}>
       <button onClick={handleClick}>{editing? "Save Page" : "Edit Page"}</button>
       <PertInfo editing={editing} className={classes.pertInfo}/>
-      <QuickNav/>
-      <Content editing={editing} />
+      {(currentPage.jumps.length > 0) && 
+        <QuickNav headerJumps={headerJumps} editing={editing}/>
+      }
+      <Content headerJumps={headerJumps} editing={editing} />
       </div>
   );
 };

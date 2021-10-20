@@ -1,25 +1,25 @@
 import MainPage from './components/MainPage';
+import { makeStyles } from "@material-ui/core/styles";
 import NavBar from './components/NavBar';
 import { Provider } from "react-redux";
 import store from "./store";
 
-// Amplify.configure({
-//   API: {
-//     endpoints: [
-//       {
-//         name: "campaignPageRetrieval-API",
-//         endpoint: "https://ul99984gf3.execute-api.us-west-1.amazonaws.com/prodDynamo"
-//       },
-//     ]
-//   }
-// });
+const styles = makeStyles(() => ({
+  app:{
+    display: "flex",
+    flexFlow: "column",
+    minHeight: "100vh",
+    height: "100%"
+  },
+}));
 
 
 function App() {
+  const classes = styles();
 
 
   return (
-    <div className="App">
+    <div className={classes.app}>
     <Provider store={store}>
       <NavBar/>
       <MainPage/>

@@ -2,7 +2,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import Editor from "./Editor";
 import TextDisplay from "./TextDisplay";
-import { updatePageData } from "../store";
+import { updatePageData } from "../store/currentPage";
 import "./content.css"
 
 const styles = makeStyles(() => ({
@@ -15,7 +15,7 @@ const styles = makeStyles(() => ({
 
 const Content = (props) => {
   const classes = styles();
-  const { currentPage, editing, updatePageData } = props;
+  const { currentPage, editing, updatePageData, headerJumps } = props;
   const { textContent } = currentPage;
   const editorPackage  = {
     data: textContent,
@@ -33,7 +33,7 @@ const Content = (props) => {
         </div>
       :
         <div className="container">
-          <TextDisplay data={textContent}/>
+          <TextDisplay data={textContent} headerJumps={headerJumps}/>
         </div>
       }
     </div>
