@@ -5,12 +5,12 @@ export const joinCampaign = (state, action) => {
 
 export const updatePage = (state, pageData) => {
   const newState = {...state};
-  newState.currentPage.textContent = pageData;
-  newState.currentPage.jumps = [];
+  newState.textContent = pageData;
+  newState.jumps = [];
   pageData.blocks.forEach(
     (block) => {
       if(block.type === "header"){
-        newState.currentPage.jumps.push(block.data.text);
+        newState.jumps.push({text:block.data.text, id:block.id});
       }
     }
   );
@@ -18,22 +18,26 @@ export const updatePage = (state, pageData) => {
 }
 
 export const updateInfo = (state, infoData) => {
-  console.log(infoData)
   const newState = {...state};
-  newState.currentPage.pertInfo = infoData;
+  newState.pertInfo = infoData;
   return newState;
 }
 
 export const changePage = (state, content) => {
   const newState = {...state};
-  newState.currentPage = {...content}
-  newState.currentPage.jumps = [];
-  content.textContent.blocks.forEach(
-    (block) => {
-      if(block.type === "header"){
-        newState.currentPage.jumps.push(block.data.text);
+  newState.page = content.page;
+  newState.textContent = content.textContent;
+  newState.campaign = content.campaign;
+  newState.pertInfo = content.pertInfo;
+  newState.jumps = [];
+  if(content.textContent?.blocks){
+    content.textContent.blocks.forEach(
+      (block) => {
+        if(block.type === "header"){
+          newState.jumps.push({text:block.data.text, id:block.id});
+        }
       }
-    }
-  );
+    );
+  }
   return newState;
 }

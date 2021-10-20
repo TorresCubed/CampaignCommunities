@@ -21,14 +21,9 @@
 /* .break {
     border: 1px solid maroon;
 } */
-br
-{   content: "A" !important;
-    display: block !important;
-    margin-bottom: 1.5em !important;
-    border: 1px solid maroon;
-}
-
-.ce-delimiter {
-    /* height: 1px; */
-    border: 1px  maroon;
+hr
+{   margin-bottom: 1.5em !important;
+    background-color: maroon;
+    margin-top: 1.5em !important;
+    border: .5px solid maroon;
 }

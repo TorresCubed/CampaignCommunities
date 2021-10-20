@@ -8,20 +8,25 @@ import { EDITOR_JS_TOOLS } from "./Tools";
 
 const Editor = (props) => {
   const editorInstance = useRef();
-  const {editorPackage} = props;
+  const { editorPackage } = props;
+  const { editorName, data, update } = editorPackage;
 
-  
+  const handleChange = async (editor) => {
+    const content = await editor.save();
+    update(content);
+  }
+
   useEffect(() => { 
     if(!editorInstance.current) {
       const editor = new EditorJS({
-          holder: editorPackage.editorName,
+          holder: editorName,
           autofocus: true,
-          data: editorPackage.data,
+          data: data,
           onReady: () => {
             editorInstance.current = editor;
             const undo = new Undo({ editor });
             new DragDrop(editor)
-            undo.initialize(editorPackage.data);
+            undo.initialize(data);
           },
           placeholder: "Design your tale!",
           tools: EDITOR_JS_TOOLS,
@@ -30,21 +35,17 @@ const Editor = (props) => {
           }
       });
     }
-    
-    const handleChange = async (editor) => {
-      const content = await editor.save();
-      editorPackage.update(content);
-    }
 
     return () => {
       editorInstance.current.destroy();
       editorInstance.current=null;
     }
-  }, [editorPackage]);  
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   
   return (
     <React.Fragment>
-      <div id={editorPackage.editorName}/>
+      <div id={editorName}/>
     </React.Fragment>
   );
 };
