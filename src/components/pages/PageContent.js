@@ -1,9 +1,9 @@
 import { makeStyles } from "@material-ui/core/styles"
 import { useCallback, useEffect, useRef, useState } from "react";
-import QuickNav from "./QuickNav";
-import PertInfo from "./PertInfo";
-import Content from "./Content";
-import { fetchPageContent, backUpPage } from "../store/utils/ThunkCreator";
+import QuickNav from "../pageContents/QuickNav";
+import PertInfo from "../pageContents/PertInfo";
+import Content from "../pageContents/Content";
+import { fetchPageContent, backUpPage } from "../../store/utils/ThunkCreator";
 import { connect } from "react-redux";
 
 const styles = makeStyles(() => ({
@@ -15,7 +15,7 @@ const styles = makeStyles(() => ({
   },
 }));
 
-const Page = (props) => {
+const PageContent = (props) => {
   const classes = styles();
   const { fetchPageContent } = props;
   const { currentPage } = props;
@@ -51,7 +51,7 @@ const Page = (props) => {
         <QuickNav headerJumps={headerJumps} editing={editing}/>
       }
       <Content headerJumps={headerJumps} editing={editing} />
-      </div>
+    </div>
   );
 };
 
@@ -69,5 +69,5 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Page);
+export default connect(mapStateToProps, mapDispatchToProps)(PageContent);
 

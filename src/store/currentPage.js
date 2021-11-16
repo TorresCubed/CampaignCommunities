@@ -1,9 +1,10 @@
-import { updatePage, changePage, updateInfo } from "./utils/reducerFunction";
+import { updatePage, changePage, updateInfo, clearCurrentCampaign } from "./utils/reducerFunction";
 
 
 const UPDATE_PAGE = "UPDATE_PAGE";
 const SET_PAGE_CONTENT = "SET_PAGE_CONTENT";
 const UPDATE_INFO = "UPDATE_INFO";
+const CLEAR_CURRENTPAGE = "CLEAR_CURRENTPAGE";
 
 export const updateInfoData = (infoData) => {
   return {
@@ -26,12 +27,19 @@ export const setPage = (content) => {
   };
 };
 
+export const clearPage = (campaignId) => {
+  return {
+    type: CLEAR_CURRENTPAGE,
+    campaignId,
+  };
+};
+
 const initialTestState = {
-    campaign: 1,
-    jumps:["Summary", "Backstory", "Campaign Start", "Death"], 
+    campaign: null,
+    jumps:[], 
     textContent: {},
-    page: "pageTitle",
-    pertInfo:["City: Human Town", "Parents: Unknown", "Class: Gambler", "Gender: Male", "Race: Tiefling", "Age: 28", "Description: Thin build, maroon Tiefling with shaved down horns. Wears a colorshifting cloak over a more ornate street attire"]
+    page: null,
+    pertInfo:[]
 }
 
 const reducer = (state = initialTestState, action) => {
@@ -42,6 +50,8 @@ const reducer = (state = initialTestState, action) => {
       return changePage(state, action.content);
     case UPDATE_INFO:
       return updateInfo(state, action.infoData);
+    case CLEAR_CURRENTPAGE:
+      return clearCurrentCampaign(state, action.campaignId);
     default:
       return state
   }

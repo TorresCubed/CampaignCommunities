@@ -8,6 +8,11 @@ const awsmobile = {
             "name": "campaignPageRetrievalAPI",
             "endpoint": "https://qpn20vj1rk.execute-api.us-west-1.amazonaws.com/staging",
             "region": "us-west-1"
+        },
+        {
+            "name": "userAccessAPI",
+            "endpoint": "https://00izz931r3.execute-api.us-west-1.amazonaws.com/staging",
+            "region": "us-west-1"
         }
     ],
     "aws_dynamodb_all_tables_region": "us-west-1",
@@ -15,8 +20,20 @@ const awsmobile = {
         {
             "tableName": "campaignPages-staging",
             "region": "us-west-1"
+        },
+        {
+            "tableName": "userAccessStorage-staging",
+            "region": "us-west-1"
+        },
+        {
+            "tableName": "campaignStorage-staging",
+            "region": "us-west-1"
         }
-    ]
+    ],
+    "aws_cognito_region": "us-west-1",
+    "aws_user_pools_id": "us-west-1_ezc9xUC2p",
+    "aws_user_pools_web_client_id": "7g6oi1sc3ieb6dgitjva4tvfr9",
+    "oauth": {}
 };
 
 

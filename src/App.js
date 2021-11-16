@@ -1,8 +1,13 @@
 import MainPage from './components/MainPage';
 import { makeStyles } from "@material-ui/core/styles";
-import NavBar from './components/NavBar';
 import { Provider } from "react-redux";
 import store from "./store";
+import Amplify from 'aws-amplify'
+import awsconfig from "./aws-exports";
+import { withAuthenticator } from '@aws-amplify/ui-react';
+
+Amplify.configure(awsconfig);
+
 
 const styles = makeStyles(() => ({
   app:{
@@ -20,12 +25,13 @@ function App() {
 
   return (
     <div className={classes.app}>
-    <Provider store={store}>
-      <NavBar/>
-      <MainPage/>
-    </Provider>
+        <Provider store={store}>
+            <MainPage/>
+        </Provider>
     </div>
   );
 }
 
-export default App;
+export default withAuthenticator(App, {
+  includeGreetings: true,
+});

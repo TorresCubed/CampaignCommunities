@@ -2,7 +2,7 @@ import EditorJS from "@editorjs/editorjs";
 import Undo from "editorjs-undo";
 import DragDrop from "editorjs-drag-drop";
 import React, { useEffect, useRef } from "react";
-import { EDITOR_JS_TOOLS } from "./Tools";
+import { EDITOR_JS_TOOLS } from "../../editorModules/Tools";
 
 
 

@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles"
 import { connect } from "react-redux";
-import { updateInfoData } from "../store/currentPage";
+import { updateInfoData } from "../../store/currentPage";
 import Editor from "./Editor";
 import TextDisplay from "./TextDisplay";
 

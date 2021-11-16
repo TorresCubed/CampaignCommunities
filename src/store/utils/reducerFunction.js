@@ -23,6 +23,22 @@ export const updateInfo = (state, infoData) => {
   return newState;
 }
 
+export const setActiveCampaign = (state, campaignId) => {
+  const newState = {...state};
+  newState.currentCampaign = campaignId;
+  return newState;
+}
+
+export const clearCurrentCampaign = (state, campaignId) => {
+  const newState = {...state};
+  newState.campaign = campaignId;
+  newState.jumps = [];
+  newState.textContent = {};
+  newState.page = null;
+  newState.pertInfo = [];
+  return newState;
+}
+
 export const changePage = (state, content) => {
   const newState = {...state};
   newState.page = content.page;

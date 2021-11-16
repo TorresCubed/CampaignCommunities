@@ -2,7 +2,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import Editor from "./Editor";
 import TextDisplay from "./TextDisplay";
-import { updatePageData } from "../store/currentPage";
+import { updatePageData } from "../../store/currentPage";
 import "./content.css"
 
 const styles = makeStyles(() => ({
